@@ -117,7 +117,7 @@ module Recurly
             message = error['message']
 
             if field.blank?
-              errors.add :base, message
+              errors.add_to_base message
               next
             end
 
@@ -125,10 +125,10 @@ module Recurly
             message = message[(humanized_name.size + 1)..-1] if message[0, humanized_name.size + 1].downcase == "#{humanized_name} "
 
             # HACK: Special case nested billing errors
-            if self.is_a?(Recurly::BillingInfo) && Recurly::BillingInfo::CreditCard.known_attributes.include?(field)
-              self.credit_card.errors.add field.to_sym, message
-              next
-            end
+            #if self.is_a?(Recurly::BillingInfo) && Recurly::BillingInfo::CreditCard.known_attributes.include?(field)
+            #  self.credit_card.errors.add field.to_sym, message
+            #  next
+            #end
 
             errors.add field.to_sym, message
           elsif error.is_a?(String)
@@ -140,7 +140,7 @@ module Recurly
               end
             end
 
-            errors.add :base, message
+            errors.add_to_base message
           end
         end
       end
